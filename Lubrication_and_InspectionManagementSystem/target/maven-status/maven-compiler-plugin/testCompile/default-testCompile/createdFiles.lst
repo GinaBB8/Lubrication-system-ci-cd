@@ -1,0 +1,6 @@
+TaskIntegrationTest.class
+LubricantsTest.class
+helpers\DatabaseTestHelper.class
+helpers\LubricantService.class
+helpers\TaskService.class
+com\Lubrication\Main.class
