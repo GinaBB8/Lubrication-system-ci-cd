@@ -1,6 +1,25 @@
+name: CI Pipeline
 
-- name: Compile Java code
-  run: mvn -B -f Lubrication_and_InspectionManagementSystem/pom.xml compile
+on:
+  push:
+  pull_request:
 
-- name: Run unit tests
-  run: mvn -B -f Lubrication_and_InspectionManagementSystem/pom.xml test
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Compile Java code
+        run: mvn -B -f Lubrication_and_InspectionManagementSystem/pom.xml compile
+
+      - name: Run unit tests
+        run: mvn -B -f Lubrication_and_InspectionManagementSystem/pom.xml test
