@@ -1,1 +1,6 @@
 
+- name: Compile Java code
+  run: mvn -B -f Lubrication_and_InspectionManagementSystem/pom.xml compile
+
+- name: Run unit tests
+  run: mvn -B -f Lubrication_and_InspectionManagementSystem/pom.xml test
