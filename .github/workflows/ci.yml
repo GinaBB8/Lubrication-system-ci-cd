@@ -1,25 +1,33 @@
-name: CI Pipeline
-
-on:
-  push:
-  pull_request:
-
 jobs:
-  build-test:
+  build-and-test:
     runs-on: ubuntu-latest
-
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: your_database_name
+          MYSQL_USER: testuser
+          MYSQL_PASSWORD: testpass
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
+      - uses: actions/checkout@v3
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Compile Java code
-        run: mvn -B -f Lubrication_and_InspectionManagementSystem/pom.xml compile
-
-      - name: Run unit tests
-        run: mvn -B -f Lubrication_and_InspectionManagementSystem/pom.xml test
+          java-version: '11'  # or your Java version
+      
+      - name: Run tests with Maven
+        run: mvn test
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/your_database_name
+          SPRING_DATASOURCE_USERNAME: testuser
+          SPRING_DATASOURCE_PASSWORD: testpass
